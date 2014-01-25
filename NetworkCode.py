@@ -3,7 +3,7 @@
 #####################
 
 '''
-Credit goes to the person who pretty much listed out the entire code
+Credit goes to the person who pretty much listed out the entire code we need
 http://www.binarytides.com/python-socket-programming-tutorial/
 25/01/2014
 '''
@@ -14,11 +14,11 @@ Simple setup of program
 1. Beaglebone acts as a network server / vision processor
 2. gets initial information about team colour from cRIO
 3. uses vision code to determine shoot or catch mode
-4. sends required info to cRIO 
+4. sends required info to cRIO
 '''
 
 '''
-Todo: 
+Todo:
 1. Thread safe checks
 2. Combine vision code
 3. Loop exits
@@ -46,7 +46,7 @@ s.listen(1) #change for more incoming connection
 def cRIO(criocon):
     if DEBUG == 1:
         criocon.send("Lets get some data") # debug line
-    
+
     while (True):
         data = criocon.recv(8) #enter amoubt of bytes to receive
         if data == 'r':
@@ -60,22 +60,22 @@ def cRIO(criocon):
         else:
             #oops, I are confused?????
             if DEBUG == 1:
-            reply = "Something wrong with cRIO Data output"
-        
+                reply = "Something wrong with cRIO Data output"
+
         if not data:
             break
-        
+
         criocon.sendall(reply) #instead of reply, send ball location (x,y), distance, etc....
     criocon.close()
 
 while (True):
     criocon,address = s.accept()
-        if DEBUG == 1:
-        print 'Connected with cRIO ' + str(address[0]) + ':' str(address[1])
+    if DEBUG == 1:
+        print 'Connected with cRIO ' + str(address[0]) + ':' + str(address[1])
         #returns IP address :PORT number
-        
+
         #starts new thread for new communication
-        start_new_thead(cRIO,(criocon,))
+        start_new_thread(cRIO,(criocon,))
 
 #close network comm
 s.close()
